@@ -58,7 +58,7 @@ $(1): $(2)
 		-e ':s /^.\+$$$$/ { p;s/^\(.*\)\.[^\.]*$$$$/\1/;b s }' | \
 	sed -n -e 'h;s/$$$$/\a/p;g;s/$$$$/@/p;g;s/$$$$/~/p;' | \
 	LC_COLLATE=C sort -u | \
-	sed -n -e '/\a$$$$/ { s/\./_/g;s/\a$$$$/__start = .;/p; }'\
-		-e '/~$$$$/ { s/\./_/g;s/~$$$$/__end = .;/p; }'\
+	sed -n -e '/\a$$$$/ { s/\./_/g;s/\_u_boot_list/$(SYM_PREFIX)_u_boot_list/g;s/\a$$$$/__start = .;/p; }'\
+		-e '/~$$$$/ { s/\./_/g;s/\_u_boot_list/$(SYM_PREFIX)_u_boot_list/g;s/~$$$$/__end = .;/p; }'\
 		-e '/@$$$$/ { s/\(.*\)@$$$$/*(SORT(\1.*));/p }' > $(1)
 endef
