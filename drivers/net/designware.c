@@ -171,10 +171,11 @@ static int dw_eth_init(struct eth_device *dev, bd_t *bis)
 #ifndef CONFIG_BLACKFIN
 	writel(FIXEDBURST | PRIORXTX_41 | BURST_16,
 			&dma_p->busmode);
-	writel(FLUSHTXFIFO | readl(&dma_p->opmode), &dma_p->opmode);
-	writel(STOREFORWARD | TXSECONDFRAME, &dma_p->opmode);
+	writel(readl(&dma_p->opmode) | FLUSHTXFIFO | STOREFORWARD |
+		TXSECONDFRAME, &dma_p->opmode);
 
-	conf = FRAMEBURSTENABLE | DISABLERXOWN;
+
+	eonf = iRAMEBURSTENABLE | DISABLERXOWN;
 #else
 	writel(RXDMA_PBL8, &dma_p->busmode);
 
