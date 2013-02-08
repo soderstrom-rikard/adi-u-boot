@@ -94,12 +94,19 @@ static void display_global_data(void)
 	printf("   \\-bi_flashoffset: %lx\n", bd->bi_flashoffset);
 }
 
+#define CPLB_PAGE_SIZE (4 * 1024 * 1024)
+#define CPLB_PAGE_MASK (~(CPLB_PAGE_SIZE - 1))
+#if defined(__ADSPBF60x__)
+#define CPLB_EX_PAGE_SIZE (16 * 1024 * 1024)
+#define CPLB_EX_PAGE_MASK (~(CPLB_EX_PAGE_SIZE - 1))
+#else
+#define CPLB_EX_PAGE_SIZE CPLB_PAGE_SIZE
+#define CPLB_EX_PAGE_MASK CPLB_PAGE_MASK
+#endif
 void init_cplbtables(void)
 {
 	volatile uint32_t *ICPLB_ADDR, *ICPLB_DATA;
 	volatile uint32_t *DCPLB_ADDR, *DCPLB_DATA;
-	uint32_t cplb_page_size;
-	uint32_t cplb_page_mask;
 	uint32_t extern_memory;
 	size_t i;
 
@@ -133,14 +140,12 @@ void init_cplbtables(void)
 			CPLB_USER_WR | CPLB_USER_RD | CPLB_VALID);
 	++i;
 #endif
-	cplb_page_size = (4 * 1024 * 1024);
-	cplb_page_mask = (~(cplb_page_size - 1));
 
 	if (CONFIG_MEM_SIZE) {
 		uint32_t mbase = CONFIG_SYS_MONITOR_BASE;
 		uint32_t mend  = mbase + CONFIG_SYS_MONITOR_LEN;
-		mbase &= cplb_page_mask;
-		mend &= cplb_page_mask;
+		mbase &= CPLB_PAGE_MASK;
+		mend &= CPLB_PAGE_MASK;
 
 		icplb_add(mbase, SDRAM_IKERNEL);
 		dcplb_add(mbase, SDRAM_DKERNEL);
@@ -173,19 +178,15 @@ void init_cplbtables(void)
 	++i;
 	icplb_add(extern_memory, SDRAM_IKERNEL);
 	dcplb_add(extern_memory, SDRAM_DKERNEL);
-	extern_memory += cplb_page_size;
+	extern_memory += CPLB_PAGE_SIZE;
 	++i;
 #endif
 
-#if defined(__ADSPBF60x__)
-	cplb_page_size = (16 * 1024 * 1024);
-	cplb_page_mask = (~(cplb_page_size - 1));
-#endif
 	while (i < 16 && extern_memory <
-		(CONFIG_SYS_MONITOR_BASE & cplb_page_mask)) {
+		(CONFIG_SYS_MONITOR_BASE & CPLB_EX_PAGE_MASK)) {
 		icplb_add(extern_memory, SDRAM_IGENERIC);
 		dcplb_add(extern_memory, SDRAM_DGENERIC);
-		extern_memory += cplb_page_size;
+		extern_memory += CPLB_EX_PAGE_SIZE;
 		++i;
 	}
 	while (i < 16) {
