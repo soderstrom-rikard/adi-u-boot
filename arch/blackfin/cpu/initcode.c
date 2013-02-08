@@ -720,14 +720,18 @@ program_clocks(ADI_BOOT_DATA *bs, bool put_into_srfs)
 __attribute__((always_inline)) static inline void
 update_serial_clocks(ADI_BOOT_DATA *bs, uint sdivB, uint divB, uint vcoB)
 {
-	serial_putc('a');
-
 	/* Since we've changed the SCLK above, we may need to update
 	 * the UART divisors (UART baud rates are based on SCLK).
 	 * Do the division by hand as there are no native instructions
 	 * for dividing which means we'd generate a libgcc reference.
 	 */
 	unsigned int sdivR, vcoR;
+	unsigned int dividend = sdivB * divB * vcoR;
+	unsigned int divisor = vcoB * sdivR;
+	unsigned int quotient;
+
+	serial_putc('a');
+
 #ifdef __ADSPBF60x__
 	sdivR = bfin_read_CGU_DIV();
 	sdivR = ((sdivR >> 8) & 0x1f) * ((sdivR >> 5) & 0x7);
@@ -736,9 +740,7 @@ update_serial_clocks(ADI_BOOT_DATA *bs, uint sdivB, uint divB, uint vcoB)
 	sdivR = bfin_read_PLL_DIV() & 0xf;
 	vcoR = (bfin_read_PLL_CTL() >> 9) & 0x3f;
 #endif
-	unsigned int dividend = sdivB * divB * vcoR;
-	unsigned int divisor = vcoB * sdivR;
-	unsigned int quotient;
+
 	quotient = early_division(dividend, divisor);
 	serial_early_put_div(quotient - ANOMALY_05000230);
 	serial_putc('c');
@@ -948,6 +950,7 @@ check_hibernation(ADI_BOOT_DATA *bs, u16 vr_ctl, bool put_into_srfs)
 	 */
 	if (ANOMALY_05000307 || vr_ctl & 0x8000) {
 		uint32_t *hibernate_magic = 0;
+
 		__builtin_bfin_ssync(); /* make sure memory controller is done */
 		if (hibernate_magic[0] == 0xDEADBEEF) {
 			serial_putc('c');
