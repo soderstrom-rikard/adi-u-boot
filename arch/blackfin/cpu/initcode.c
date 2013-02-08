@@ -15,23 +15,17 @@
 #include <asm/blackfin.h>
 #include <asm/mach-common/bits/bootrom.h>
 #include <asm/mach-common/bits/core.h>
-#ifndef __ADSPBF60x__
-#include <asm/mach-common/bits/ebiu.h>
-#endif
-
-#define BUG() while (1) { asm volatile("emuexcpt;"); }
 
 #define BUG() while (1) { asm volatile("emuexcpt;"); }
 
 #include "serial.h"
 
 #ifndef __ADSPBF60x__
+#include <asm/mach-common/bits/ebiu.h>
 #include <asm/mach-common/bits/pll.h>
-#else
+#else /* __ADSPBF60x__ */
 #include <asm/mach-common/bits/cgu.h>
-#endif
 
-#ifdef __ADSPBF60x__
 #define CONFIG_BFIN_GET_DCLK_M \
 	((CONFIG_CLKIN_HZ*CONFIG_VCO_MULT)/(CONFIG_DCLK_DIV*1000000))
 
@@ -148,7 +142,7 @@ static struct ddr_config ddr_config_table[] = {
 		.dmc_ddrmr1 = 0x4,
 	},
 };
-#endif
+#endif /* __ADSPBF60x__ */
 
 __attribute__((always_inline))
 static inline void serial_init(void)
