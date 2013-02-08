@@ -23,27 +23,27 @@
 #define WDSIZE_256		0x00000500	/* Transfer Word Size = 32 */
 #define DMA2D			0x04000000	/* DMA Mode (2D/1D*) */
 #define RESTART			0x00000004	/* DMA Buffer Clear SYNC */
-#define DI_EN_X			0x00100000	/* Data Interrupt Enable in X count */
-#define DI_EN_Y			0x00200000	/* Data Interrupt Enable in Y count */
-#define DI_EN_P			0x00300000	/* Data Interrupt Enable in Peripheral */
-#define DI_EN			DI_EN_X		/* Data Interrupt Enable */
-#define NDSIZE_0		0x00000000	/* Next Descriptor Size = 0 (Stop/Autobuffer) */
-#define NDSIZE_1		0x00010000	/* Next Descriptor Size = 1 */
-#define NDSIZE_2		0x00020000	/* Next Descriptor Size = 2 */
-#define NDSIZE_3		0x00030000	/* Next Descriptor Size = 3 */
-#define NDSIZE_4		0x00040000	/* Next Descriptor Size = 4 */
-#define NDSIZE_5		0x00050000	/* Next Descriptor Size = 5 */
-#define NDSIZE_6		0x00060000	/* Next Descriptor Size = 6 */
-#define NDSIZE			0x00070000	/* Next Descriptor Size */
-#define NDSIZE_OFFSET		16		/* Next Descriptor Size Offset */
-#define DMAFLOW_LIST		0x00004000	/* Descriptor List Mode */
-#define DMAFLOW_ARRAY		0x00005000	/* Descriptor Array Mode */
-#define DMAFLOW_LIST_DEMAND	0x00006000	/* Descriptor Demand List Mode */
-#define DMAFLOW_ARRAY_DEMAND	0x00007000	/* Descriptor Demand Array Mode */
-#define DMA_RUN_DFETCH		0x00000100	/* DMA Channel Running Indicator (DFETCH) */
-#define DMA_RUN			0x00000200	/* DMA Channel Running Indicator */
-#define DMA_RUN_WAIT_TRIG	0x00000300	/* DMA Channel Running Indicator (WAIT TRIG) */
-#define DMA_RUN_WAIT_ACK	0x00000400	/* DMA Channel Running Indicator (WAIT ACK) */
+#define DI_EN_X			0x00100000	/* Data Int Enable in X count */
+#define DI_EN_Y			0x00200000	/* Data Int Enable in Y count */
+#define DI_EN_P			0x00300000	/* Data Int Enable in Peri */
+#define DI_EN			DI_EN_X		/* Data Int Enable */
+#define NDSIZE_0		0x00000000	/* Next Desc Size = 0 */
+#define NDSIZE_1		0x00010000	/* Next Desc Size = 1 */
+#define NDSIZE_2		0x00020000	/* Next Desc Size = 2 */
+#define NDSIZE_3		0x00030000	/* Next Desc Size = 3 */
+#define NDSIZE_4		0x00040000	/* Next Desc Size = 4 */
+#define NDSIZE_5		0x00050000	/* Next Desc Size = 5 */
+#define NDSIZE_6		0x00060000	/* Next Desc Size = 6 */
+#define NDSIZE			0x00070000	/* Next Desc Size */
+#define NDSIZE_OFFSET		16		/* Next Desc Size Offset */
+#define DMAFLOW_LIST		0x00004000	/* Desc List Mode */
+#define DMAFLOW_ARRAY		0x00005000	/* Desc Array Mode */
+#define DMAFLOW_LIST_DEMAND	0x00006000	/* Desc Demand List Mode */
+#define DMAFLOW_ARRAY_DEMAND	0x00007000	/* Desc Demand Array Mode */
+#define DMA_RUN_DFETCH		0x00000100	/* DMA Channel Run (DFETCH) */
+#define DMA_RUN			0x00000200	/* DMA Channel Run */
+#define DMA_RUN_WAIT_TRIG	0x00000300	/* DMA Channel Run (WAIT TRIG)*/
+#define DMA_RUN_WAIT_ACK	0x00000400	/* DMA Channel Run (WAIT ACK) */
 
 #else
 
@@ -56,7 +56,7 @@
 #define DI_SEL			0x0040	/* Data Interrupt Timing Select */
 #define DI_EN			0x0080	/* Data Interrupt Enable */
 #define NDSIZE			0x0F00	/* Next Descriptor bitmask */
-#define NDSIZE_0		0x0000	/* Next Descriptor Size = 0 (Stop/Autobuffer) */
+#define NDSIZE_0		0x0000	/* Next Descriptor Size = 0 */
 #define NDSIZE_1		0x0100	/* Next Descriptor Size = 1 */
 #define NDSIZE_2		0x0200	/* Next Descriptor Size = 2 */
 #define NDSIZE_3		0x0300	/* Next Descriptor Size = 3 */
@@ -95,8 +95,8 @@
 #define DMA_RUN_P		3	/* DMA Running Indicator */
 
 /* DMAx_PERIPHERAL_MAP, MDMA_yy_PERIPHERAL_MAP Masks */
-#define CTYPE			0x0040	/* DMA Channel Type Indicator (Memory/Peripheral*) */
-#define CTYPE_P			6	/* DMA Channel Type Indicator BIT POSITION */
+#define CTYPE			0x0040	/* DMA Channel Type (Mem/Peri) */
+#define CTYPE_P			6	/* DMA Channel Type BIT POSITION */
 #define PMAP			0xF000	/* Peripheral Mapped To This Channel */
 
 #endif

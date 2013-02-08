@@ -32,7 +32,8 @@
 #endif
 
 #ifdef __ADSPBF60x__
-#define CONFIG_BFIN_GET_DCLK_M ((CONFIG_CLKIN_HZ*CONFIG_VCO_MULT)/(CONFIG_DCLK_DIV*1000000))
+#define CONFIG_BFIN_GET_DCLK_M \
+	((CONFIG_CLKIN_HZ*CONFIG_VCO_MULT)/(CONFIG_DCLK_DIV*1000000))
 
 #ifndef CONFIG_DMC_DDRCFG
 #if ((CONFIG_BFIN_GET_DCLK_M != 125) && \
@@ -167,7 +168,8 @@ static inline void serial_init(void)
 #if BFIN_UART_HW_VER < 4
 		bfin_write16(&pUART->mcr, bfin_read16(&pUART->mcr) | FCPOL);
 #else
-		bfin_write32(&pUART->control, bfin_read32(&pUART->control) | FCPOL);
+		bfin_write32(&pUART->control, bfin_read32(&pUART->control) |
+				FCPOL);
 #endif
 
 		/* Wait for the line to clear up.  We cannot rely on UART
@@ -216,7 +218,8 @@ static inline void serial_deinit(void)
 #if BFIN_UART_HW_VER < 4
 		bfin_write16(&pUART->mcr, bfin_read16(&pUART->mcr) & ~FCPOL);
 #else
-		bfin_write32(&pUART->control, bfin_read32(&pUART->control) & ~FCPOL);
+		bfin_write32(&pUART->control, bfin_read32(&pUART->control) &
+				~FCPOL);
 #endif
 	}
 #endif
@@ -816,7 +819,8 @@ program_memory_controller(ADI_BOOT_DATA *bs, bool put_into_srfs)
 	while (!(bfin_read_DMC0_STAT() & MEMINITDONE))
 		continue;
 
-	dlldatacycle = (bfin_read_DMC0_STAT() & PHYRDPHASE) >> PHYRDPHASE_OFFSET;
+	dlldatacycle = (bfin_read_DMC0_STAT() & PHYRDPHASE) >>
+			PHYRDPHASE_OFFSET;
 	dll_ctl = bfin_read_DMC0_DLLCTL();
 	dll_ctl &= 0x0ff;
 	bfin_write_DMC0_DLLCTL(dll_ctl | (dlldatacycle << DATACYC_OFFSET));
@@ -925,7 +929,9 @@ check_hibernation(ADI_BOOT_DATA *bs, u16 vr_ctl, bool put_into_srfs)
 				"nop;nop;nop;"
 				"rti;"
 				:
-				: "p"(hibernate_magic), "d"(0x2000 /* jump.s 0 */), "d"(0xffa00000)
+				: "p"(hibernate_magic),
+				"d"(0x2000 /* jump.s 0 */),
+				"d"(0xffa00000)
 			);
 		}
 

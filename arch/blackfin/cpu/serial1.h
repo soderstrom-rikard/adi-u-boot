@@ -89,8 +89,14 @@ static inline void serial_early_do_portmux(void)
 {
 #if defined(__ADSPBF50x__)
 # define DO_MUX(port, mux_tx, mux_rx, tx, rx) \
-	bfin_write_PORT##port##_MUX((bfin_read_PORT##port##_MUX() & ~(PORT_x_MUX_##mux_tx##_MASK | PORT_x_MUX_##mux_rx##_MASK)) | PORT_x_MUX_##mux_tx##_FUNC_1 | PORT_x_MUX_##mux_rx##_FUNC_1); \
-	bfin_write_PORT##port##_FER(bfin_read_PORT##port##_FER() | P##port##tx | P##port##rx);
+	do { bfin_write_PORT##port##_MUX((bfin_read_PORT##port##_MUX() & \
+		~(PORT_x_MUX_##mux_tx##_MASK | \
+		PORT_x_MUX_##mux_rx##_MASK)) | \
+		PORT_x_MUX_##mux_tx##_FUNC_1 | \
+		PORT_x_MUX_##mux_rx##_FUNC_1); \
+	bfin_write_PORT##port##_FER(bfin_read_PORT##port##_FER() | \
+		P##port##tx | P##port##rx); \
+	} while (0)
 	switch (CONFIG_UART_CONSOLE) {
 	case 0: DO_MUX(G, 7, 7, 12, 13); break;	/* Port G; mux 7; PG12 and PG13 */
 	case 1: DO_MUX(F, 3, 3, 6, 7);   break;	/* Port F; mux 3; PF6 and PF7 */
@@ -98,8 +104,14 @@ static inline void serial_early_do_portmux(void)
 	SSYNC();
 #elif defined(__ADSPBF51x__)
 # define DO_MUX(port, mux_tx, mux_rx, tx, rx) \
-	bfin_write_PORT##port##_MUX((bfin_read_PORT##port##_MUX() & ~(PORT_x_MUX_##mux_tx##_MASK | PORT_x_MUX_##mux_rx##_MASK)) | PORT_x_MUX_##mux_tx##_FUNC_2 | PORT_x_MUX_##mux_rx##_FUNC_2); \
-	bfin_write_PORT##port##_FER(bfin_read_PORT##port##_FER() | P##port##tx | P##port##rx);
+	do { bfin_write_PORT##port##_MUX((bfin_read_PORT##port##_MUX() & \
+		~(PORT_x_MUX_##mux_tx##_MASK | \
+		PORT_x_MUX_##mux_rx##_MASK)) | \
+		PORT_x_MUX_##mux_tx##_FUNC_2 | \
+		PORT_x_MUX_##mux_rx##_FUNC_2); \
+	bfin_write_PORT##port##_FER(bfin_read_PORT##port##_FER() | \
+		P##port##tx | P##port##rx); \
+	} while (0)
 	switch (CONFIG_UART_CONSOLE) {
 	case 0: DO_MUX(G, 5, 5, 9, 10);  break;	/* Port G; mux 5; PG9 and PG10 */
 	case 1: DO_MUX(F, 2, 3, 14, 15); break;	/* Port H; mux 2/3; PH14 and PH15 */
@@ -107,8 +119,12 @@ static inline void serial_early_do_portmux(void)
 	SSYNC();
 #elif defined(__ADSPBF52x__)
 # define DO_MUX(port, mux, tx, rx) \
-	bfin_write_PORT##port##_MUX((bfin_read_PORT##port##_MUX() & ~PORT_x_MUX_##mux##_MASK) | PORT_x_MUX_##mux##_FUNC_3); \
-	bfin_write_PORT##port##_FER(bfin_read_PORT##port##_FER() | P##port##tx | P##port##rx);
+	do { bfin_write_PORT##port##_MUX((bfin_read_PORT##port##_MUX() & \
+		~PORT_x_MUX_##mux##_MASK) | \
+		PORT_x_MUX_##mux##_FUNC_3); \
+	bfin_write_PORT##port##_FER(bfin_read_PORT##port##_FER() | \
+		P##port##tx | P##port##rx); \
+	} while (0)
 	switch (CONFIG_UART_CONSOLE) {
 	case 0: DO_MUX(G, 2, 7, 8);   break;	/* Port G; mux 2; PG2 and PG8 */
 	case 1: DO_MUX(F, 5, 14, 15); break;	/* Port F; mux 5; PF14 and PF15 */
@@ -123,8 +139,14 @@ static inline void serial_early_do_portmux(void)
 	SSYNC();
 #elif defined(__ADSPBF54x__)
 # define DO_MUX(port, tx, rx) \
-	bfin_write_PORT##port##_MUX((bfin_read_PORT##port##_MUX() & ~(PORT_x_MUX_##tx##_MASK | PORT_x_MUX_##rx##_MASK)) | PORT_x_MUX_##tx##_FUNC_1 | PORT_x_MUX_##rx##_FUNC_1); \
-	bfin_write_PORT##port##_FER(bfin_read_PORT##port##_FER() | P##port##tx | P##port##rx);
+	do { bfin_write_PORT##port##_MUX((bfin_read_PORT##port##_MUX() & \
+		~(PORT_x_MUX_##tx##_MASK | \
+		PORT_x_MUX_##rx##_MASK)) | \
+		PORT_x_MUX_##tx##_FUNC_1 | \
+		PORT_x_MUX_##rx##_FUNC_1); \
+	bfin_write_PORT##port##_FER(bfin_read_PORT##port##_FER() | \
+		P##port##tx | P##port##rx); \
+	} while (0)
 	switch (CONFIG_UART_CONSOLE) {
 	case 0: DO_MUX(E, 7, 8); break;	/* Port E; PE7 and PE8 */
 	case 1: DO_MUX(H, 0, 1); break;	/* Port H; PH0 and PH1 */

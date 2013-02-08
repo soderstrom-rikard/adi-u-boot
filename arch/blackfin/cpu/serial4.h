@@ -48,7 +48,11 @@ static inline void serial_early_do_portmux(void)
 #if defined(__ADSPBF60x__)
 # define DO_MUX(port, tx, rx, func) do \
 {\
-	bfin_write_PORT##port##_MUX((bfin_read_PORT##port##_MUX() & ~(PORT_x_MUX_##tx##_MASK | PORT_x_MUX_##rx##_MASK)) | PORT_x_MUX_##tx##_FUNC_##func | PORT_x_MUX_##rx##_FUNC_##func); \
+	bfin_write_PORT##port##_MUX((bfin_read_PORT##port##_MUX() & \
+		~(PORT_x_MUX_##tx##_MASK | \
+		PORT_x_MUX_##rx##_MASK)) | \
+		PORT_x_MUX_##tx##_FUNC_##func | \
+		PORT_x_MUX_##rx##_FUNC_##func); \
 	bfin_write_PORT##port##_FER_SET(P##port##tx | P##port##rx);\
 } while (0);
 	switch (CONFIG_UART_CONSOLE) {

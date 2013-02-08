@@ -101,34 +101,34 @@ void spi_init()
 }
 
 #define SPI_PINS(n) \
-	[n] = { 0, P_SPI##n##_SCK, P_SPI##n##_MISO, P_SPI##n##_MOSI, 0 }
+	{ 0, P_SPI##n##_SCK, P_SPI##n##_MISO, P_SPI##n##_MOSI, 0 }
 static unsigned short pins[][5] = {
 #ifdef SPI0_REGBASE
-	SPI_PINS(0),
+	[0] = SPI_PINS(0),
 #endif
 #ifdef SPI1_REGBASE
-	SPI_PINS(1),
+	[1] = SPI_PINS(1),
 #endif
 #ifdef SPI2_REGBASE
-	SPI_PINS(2),
+	[2] = SPI_PINS(2),
 #endif
 };
 
 #define SPI_CS_PINS(n) \
-	[n] = { \
+	{ \
 		P_SPI##n##_SSEL1, P_SPI##n##_SSEL2, P_SPI##n##_SSEL3, \
 		P_SPI##n##_SSEL4, P_SPI##n##_SSEL5, P_SPI##n##_SSEL6, \
 		P_SPI##n##_SSEL7, \
 	}
 static const unsigned short cs_pins[][7] = {
 #ifdef SPI0_REGBASE
-	SPI_CS_PINS(0),
+	[0] = SPI_CS_PINS(0),
 #endif
 #ifdef SPI1_REGBASE
-	SPI_CS_PINS(1),
+	[1] = SPI_CS_PINS(1),
 #endif
 #ifdef SPI2_REGBASE
-	SPI_CS_PINS(2),
+	[2] = SPI_CS_PINS(2),
 #endif
 };
 

@@ -14,7 +14,7 @@
 #define                     CMD_E  0x400      /* Command Enable */
 #ifdef RSI_BLKSZ
 #define           CMD_CRC_CHECK_D  0x800      /* CRC Check is disabled */
-#define            CMD_DATA0_BUSY  0x1000     /* Check for Busy State on the DATA0 pin */
+#define            CMD_DATA0_BUSY  0x1000     /* Check Busy State on DATA0 */
 #endif
 
 /* Bit masks for SDH_PWR_CTL */
@@ -146,7 +146,7 @@
 #define                    PWR_ON  0x600      /* Power On */
 #define                 SD_CMD_OD  0x800      /* Open Drain Output */
 #define                   BOOT_EN  0x1000     /* Boot Enable */
-#define                 BOOT_MODE  0x2000     /* Alternate Boot Mode */.
+#define                 BOOT_MODE  0x2000     /* Alternate Boot Mode */
 #define               BOOT_ACK_EN  0x4000     /* Boot ACK is expected */
 #endif
 

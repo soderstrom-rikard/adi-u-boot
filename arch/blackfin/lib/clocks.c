@@ -63,7 +63,8 @@ u_long get_cclk(void)
 /* Get the System clock */
 #ifdef CGU_DIV
 
-static u_long cached_sclk_pll_div, cached_sclk, cached_sclk0, cached_sclk1, cached_dclk;
+static u_long cached_sclk_pll_div, cached_sclk;
+static u_long cached_sclk0, cached_sclk1, cached_dclk;
 static u_long _get_sclk(u_long *cache)
 {
 	u_long div, ssel;

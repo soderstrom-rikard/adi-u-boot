@@ -80,10 +80,8 @@
 /*
  * Network Settings
  */
-#define ADI_CMDS_NETWORK	1
 #define CONFIG_NETCONSOLE	1
-#define CONFIG_NET_MULTI	1
-#define CONFIG_HOSTNAME		bf609-ezkit
+#define CONFIG_HOSTNAME		"bf609-ezkit"
 #define CONFIG_DESIGNWARE_ETH
 #define CONFIG_DW_PORTS		1
 #define CONFIG_DW_AUTONEG
