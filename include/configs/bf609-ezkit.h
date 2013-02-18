@@ -80,9 +80,9 @@
 /*
  * Network Settings
  */
-#define ADI_CMDS_NETWORK	1
-#define CONFIG_NETCONSOLE	1
-#define CONFIG_NET_MULTI	1
+#define ADI_CMDS_NETWORK
+#define CONFIG_NETCONSOLE
+#define CONFIG_NET_MULTI
 #define CONFIG_HOSTNAME		"bf609-ezkit"
 #define CONFIG_DESIGNWARE_ETH
 #define CONFIG_DW_PORTS		1
@@ -94,8 +94,8 @@
 #define CONFIG_ETHADDR	02:80:ad:20:31:e8
 
 /* i2c Settings */
-#define CONFIG_BFIN_TWI_I2C	1
-#define CONFIG_HARD_I2C		1
+#define CONFIG_BFIN_TWI_I2C
+#define CONFIG_HARD_I2C
 
 /*
  * Flash Settings
@@ -167,9 +167,6 @@
  */
 #define CONFIG_BOARD_EARLY_INIT_F
 #define CONFIG_UART_CONSOLE	0
-
-#define CONFIG_DEBUG_DUMP	1
-#define CONFIG_KALLSYMS		1
 
 #define CONFIG_CMD_MEMORY
 #define CONFIG_CMD_SOFTSWITCH

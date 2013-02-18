@@ -10,7 +10,7 @@
  */
 #ifndef _CONFIG_CMD_DEFAULT_H
 # include <config_cmd_default.h>
-# if ADI_CMDS_NETWORK
+# ifdef ADI_CMDS_NETWORK
 #  define CONFIG_CMD_DHCP
 #  define CONFIG_BOOTP_SUBNETMASK
 #  define CONFIG_BOOTP_GATEWAY
@@ -58,7 +58,7 @@
 # endif
 # ifdef CONFIG_RTC_BFIN
 #  define CONFIG_CMD_DATE
-#  if ADI_CMDS_NETWORK
+#  ifdef ADI_CMDS_NETWORK
 #   define CONFIG_CMD_SNTP
 #  endif
 # endif
