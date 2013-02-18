@@ -33,21 +33,32 @@
  * All Blackfin system MMRs are padded to 32bits even if the register
  * itself is only 16bits.  So use a helper macro to streamline this.
  */
-#define __BFP(m) u16 m; u16 __pad_##m
 struct bfin_mmr_serial {
 #if BFIN_UART_HW_VER == 2
-	__BFP(dll);
-	__BFP(dlh);
-	__BFP(gctl);
-	__BFP(lcr);
-	__BFP(mcr);
-	__BFP(lsr);
-	__BFP(msr);
-	__BFP(scr);
-	__BFP(ier_set);
-	__BFP(ier_clear);
-	__BFP(thr);
-	__BFP(rbr);
+	u16 dll;
+	u16 __pad_0;
+	u16 dlh;
+	u16 __pad_1;
+	u16 gctl;
+	u16 __pad_2;
+	u16 lcr;
+	u16 __pad_3;
+	u16 mcr;
+	u16 __pad_4;
+	u16 lsr;
+	u16 __pad_5;
+	u16 msr;
+	u16 __pad_6;
+	u16 scr;
+	u16 __pad_7;
+	u16 ier_set;
+	u16 __pad_8;
+	u16 ier_clear;
+	u16 __pad_9;
+	u16 thr;
+	u16 __pad_10;
+	u16 rbr;
+	u16 __pad_11;
 #else
 	union {
 		u16 dll;
@@ -60,17 +71,23 @@ struct bfin_mmr_serial {
 		u16 ier;
 	};
 	const u16 __spad1;
-	const __BFP(iir);
-	__BFP(lcr);
-	__BFP(mcr);
-	__BFP(lsr);
-	__BFP(msr);
-	__BFP(scr);
+	const u16 iir;
+	u16 __pad_0;
+	u16 lcr;
+	u16 __pad_1;
+	u16 mcr;
+	u16 __pad_2;
+	u16 lsr;
+	u16 __pad_3;
+	u16 msr;
+	u16 __pad_4;
+	u16 scr;
+	u16 __pad_5;
 	const u32 __spad2;
-	__BFP(gctl);
+	u16 gctl;
+	u16 __pad_6;
 #endif
 };
-#undef __BFP
 
 typedef uint16_t uart_lsr_t;
 #define _lsr_read(p)     bfin_read(&p->lsr)
