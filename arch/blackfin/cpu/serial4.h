@@ -43,32 +43,45 @@ typedef uint32_t uart_lsr_t;
 #define _lsr_write(p, v) bfin_write(&p->status, v)
 
 __attribute__((always_inline))
+static inline void serial_early_do_mach_portmux(char port, int mux_mask,
+	int mux_func, int port_pin)
+{
+	switch (port) {
+	case 'D':
+		bfin_write_PORTD_MUX((bfin_read_PORTD_MUX() &
+			~mux_mask) | mux_func);
+		bfin_write_PORTD_FER(bfin_read_PORTD_FER() | port_pin);
+		break;
+	case 'G':
+		bfin_write_PORTG_MUX((bfin_read_PORTG_MUX() &
+			~mux_mask) | mux_func);
+		bfin_write_PORTG_FER(bfin_read_PORTG_FER() | port_pin);
+		break;
+	}
+}
+
+__attribute__((always_inline))
 static inline void serial_early_do_portmux(void)
 {
 #if defined(__ADSPBF60x__)
-# define DO_MUX(port, tx, rx, func) do \
-{\
-	bfin_write_PORT##port##_MUX((bfin_read_PORT##port##_MUX() & \
-		~(PORT_x_MUX_##tx##_MASK | \
-		PORT_x_MUX_##rx##_MASK)) | \
-		PORT_x_MUX_##tx##_FUNC_##func | \
-		PORT_x_MUX_##rx##_FUNC_##func); \
-	bfin_write_PORT##port##_FER_SET(P##port##tx | P##port##rx);\
-} while (0);
 	switch (CONFIG_UART_CONSOLE) {
-	case 0:
-		DO_MUX(D, 7, 8, 2);
-		break; /* Port D; PD7 and PD8; function 2 */
-	case 1:
-		DO_MUX(G, 15, 14, 1);
-		break; /* Port G; PG15 and PH14; function 1 */
+	case 0:	serial_early_do_mach_portmux('D', PORT_x_MUX_7_MASK,
+		PORT_x_MUX_7_FUNC_2, PD7); /* TX: D; mux 7; func 2; PD7 */
+		serial_early_do_mach_portmux('D', PORT_x_MUX_8_MASK,
+		PORT_x_MUX_8_FUNC_2, PD8); /* RX: D; mux 8; func 2; PD8 */
+		break;
+	case 1:	serial_early_do_mach_portmux('G', PORT_x_MUX_15_MASK,
+		PORT_x_MUX_15_FUNC_1, PG15); /* TX: G; mux 15; func 1; PG15 */
+		serial_early_do_mach_portmux('G', PORT_x_MUX_14_MASK,
+		PORT_x_MUX_14_FUNC_1, PG14); /* RX: G; mux 14; func 1; PG14 */
+		break;
 	}
-	SSYNC();
 #else
 # if (P_UART(RX) & P_DEFINED) || (P_UART(TX) & P_DEFINED)
 #  error "missing portmux logic for UART"
 # endif
 #endif
+	SSYNC();
 }
 
 __attribute__((always_inline))

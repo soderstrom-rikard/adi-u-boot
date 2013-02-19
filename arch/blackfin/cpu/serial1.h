@@ -102,75 +102,115 @@ typedef uint16_t uart_lsr_t;
 #endif
 
 __attribute__((always_inline))
+static inline void serial_early_do_mach_portmux(char port, int mux_mask,
+	int mux_func, int port_pin)
+{
+	switch (port) {
+#if defined(__ADSPBF54x__)
+	case 'B':
+		bfin_write_PORTB_MUX((bfin_read_PORTB_MUX() &
+			~mux_mask) | mux_func);
+		bfin_write_PORTB_FER(bfin_read_PORTB_FER() | port_pin);
+		break;
+	case 'E':
+		bfin_write_PORTE_MUX((bfin_read_PORTE_MUX() &
+			~mux_mask) | mux_func);
+		bfin_write_PORTE_FER(bfin_read_PORTE_FER() | port_pin);
+		break;
+#endif
+#if defined(__ADSPBF50x__) || defined(__ADSPBF51x__) || defined(__ADSPBF52x__)
+	case 'F':
+		bfin_write_PORTF_MUX((bfin_read_PORTF_MUX() &
+			~mux_mask) | mux_func);
+		bfin_write_PORTF_FER(bfin_read_PORTF_FER() | port_pin);
+		break;
+	case 'G':
+		bfin_write_PORTG_MUX((bfin_read_PORTG_MUX() &
+			~mux_mask) | mux_func);
+		bfin_write_PORTG_FER(bfin_read_PORTG_FER() | port_pin);
+		break;
+	case 'H':
+		bfin_write_PORTH_MUX((bfin_read_PORTH_MUX() &
+			~mux_mask) | mux_func);
+		bfin_write_PORTH_FER(bfin_read_PORTH_FER() | port_pin);
+		break;
+#endif
+	default:
+		break;
+	}
+}
+
+__attribute__((always_inline))
 static inline void serial_early_do_portmux(void)
 {
 #if defined(__ADSPBF50x__)
-# define DO_MUX(port, mux_tx, mux_rx, tx, rx) \
-	do { bfin_write_PORT##port##_MUX((bfin_read_PORT##port##_MUX() & \
-		~(PORT_x_MUX_##mux_tx##_MASK | \
-		PORT_x_MUX_##mux_rx##_MASK)) | \
-		PORT_x_MUX_##mux_tx##_FUNC_1 | \
-		PORT_x_MUX_##mux_rx##_FUNC_1); \
-	bfin_write_PORT##port##_FER(bfin_read_PORT##port##_FER() | \
-		P##port##tx | P##port##rx); \
-	} while (0)
 	switch (CONFIG_UART_CONSOLE) {
-	case 0: DO_MUX(G, 7, 7, 12, 13); break;	/* Port G; mux 7; PG12 and PG13 */
-	case 1: DO_MUX(F, 3, 3, 6, 7);   break;	/* Port F; mux 3; PF6 and PF7 */
+	case 0:	serial_early_do_mach_portmux('G', PORT_x_MUX_7_MASK,
+		PORT_x_MUX_7_FUNC_1, PG12); /* TX: G; mux 7; func 1; PG12 */
+		serial_early_do_mach_portmux('G', PORT_x_MUX_7_MASK,
+		PORT_x_MUX_7_FUNC_1, PG13); /* RX: G; mux 7; func 1; PG13 */
+		break;
+	case 1:	serial_early_do_mach_portmux('F', PORT_x_MUX_3_MASK,
+		PORT_x_MUX_3_FUNC_1, PF7); /* TX: F; mux 3; func 1; PF6 */
+		serial_early_do_mach_portmux('F', PORT_x_MUX_3_MASK,
+		PORT_x_MUX_3_FUNC_1, PF6); /* RX: F; mux 3; func 1; PF7 */
+		break;
 	}
-	SSYNC();
 #elif defined(__ADSPBF51x__)
-# define DO_MUX(port, mux_tx, mux_rx, tx, rx) \
-	do { bfin_write_PORT##port##_MUX((bfin_read_PORT##port##_MUX() & \
-		~(PORT_x_MUX_##mux_tx##_MASK | \
-		PORT_x_MUX_##mux_rx##_MASK)) | \
-		PORT_x_MUX_##mux_tx##_FUNC_2 | \
-		PORT_x_MUX_##mux_rx##_FUNC_2); \
-	bfin_write_PORT##port##_FER(bfin_read_PORT##port##_FER() | \
-		P##port##tx | P##port##rx); \
-	} while (0)
 	switch (CONFIG_UART_CONSOLE) {
-	case 0: DO_MUX(G, 5, 5, 9, 10);  break;	/* Port G; mux 5; PG9 and PG10 */
-	case 1: DO_MUX(F, 2, 3, 14, 15); break;	/* Port H; mux 2/3; PH14 and PH15 */
+	case 0:	serial_early_do_mach_portmux('G', PORT_x_MUX_5_MASK,
+		PORT_x_MUX_5_FUNC_2, PG9); /* TX: G; mux 5; func 2; PG9 */
+		serial_early_do_mach_portmux('G', PORT_x_MUX_5_MASK,
+		PORT_x_MUX_5_FUNC_2, PG10); /* RX: G; mux 5; func 2; PG10 */
+		break;
+	case 1:	serial_early_do_mach_portmux('H', PORT_x_MUX_3_MASK,
+		PORT_x_MUX_3_FUNC_2, PH7); /* TX: H; mux 3; func 2; PH6 */
+		serial_early_do_mach_portmux('H', PORT_x_MUX_3_MASK,
+		PORT_x_MUX_3_FUNC_2, PH6); /* RX: H; mux 3; func 2; PH7 */
+		break;
 	}
-	SSYNC();
 #elif defined(__ADSPBF52x__)
-# define DO_MUX(port, mux, tx, rx) \
-	do { bfin_write_PORT##port##_MUX((bfin_read_PORT##port##_MUX() & \
-		~PORT_x_MUX_##mux##_MASK) | \
-		PORT_x_MUX_##mux##_FUNC_3); \
-	bfin_write_PORT##port##_FER(bfin_read_PORT##port##_FER() | \
-		P##port##tx | P##port##rx); \
-	} while (0)
 	switch (CONFIG_UART_CONSOLE) {
-	case 0: DO_MUX(G, 2, 7, 8);   break;	/* Port G; mux 2; PG2 and PG8 */
-	case 1: DO_MUX(F, 5, 14, 15); break;	/* Port F; mux 5; PF14 and PF15 */
+	case 0:	serial_early_do_mach_portmux('G', PORT_x_MUX_2_MASK,
+		PORT_x_MUX_2_FUNC_3, PG7); /* TX: G; mux 2; func 3; PG7 */
+		serial_early_do_mach_portmux('G', PORT_x_MUX_2_MASK,
+		PORT_x_MUX_2_FUNC_3, PG8); /* RX: G; mux 2; func 3; PG8 */
+		break;
+	case 1:	serial_early_do_mach_portmux('F', PORT_x_MUX_5_MASK,
+		PORT_x_MUX_5_FUNC_3, PF14); /* TX: F; mux 5; func 3; PF14 */
+		serial_early_do_mach_portmux('F', PORT_x_MUX_5_MASK,
+		PORT_x_MUX_5_FUNC_3, PF15); /* RX: F; mux 5; func 3; PF15 */
+		break;
 	}
-	SSYNC();
 #elif defined(__ADSPBF537__) || defined(__ADSPBF536__) || defined(__ADSPBF534__)
 	const uint16_t func[] = { PFDE, PFTE, };
 	bfin_write_PORT_MUX(bfin_read_PORT_MUX() & ~func[CONFIG_UART_CONSOLE]);
 	bfin_write_PORTF_FER(bfin_read_PORTF_FER() |
 	                     (1 << P_IDENT(P_UART(RX))) |
 	                     (1 << P_IDENT(P_UART(TX))));
-	SSYNC();
 #elif defined(__ADSPBF54x__)
-# define DO_MUX(port, tx, rx) \
-	do { bfin_write_PORT##port##_MUX((bfin_read_PORT##port##_MUX() & \
-		~(PORT_x_MUX_##tx##_MASK | \
-		PORT_x_MUX_##rx##_MASK)) | \
-		PORT_x_MUX_##tx##_FUNC_1 | \
-		PORT_x_MUX_##rx##_FUNC_1); \
-	bfin_write_PORT##port##_FER(bfin_read_PORT##port##_FER() | \
-		P##port##tx | P##port##rx); \
-	} while (0)
 	switch (CONFIG_UART_CONSOLE) {
-	case 0: DO_MUX(E, 7, 8); break;	/* Port E; PE7 and PE8 */
-	case 1: DO_MUX(H, 0, 1); break;	/* Port H; PH0 and PH1 */
-	case 2: DO_MUX(B, 4, 5); break;	/* Port B; PB4 and PB5 */
-	case 3: DO_MUX(B, 6, 7); break;	/* Port B; PB6 and PB7 */
+	case 0:	serial_early_do_mach_portmux('E', PORT_x_MUX_7_MASK,
+		PORT_x_MUX_7_FUNC_1, PE7); /* TX: E; mux 7; func 1; PE7 */
+		serial_early_do_mach_portmux('E', PORT_x_MUX_8_MASK,
+		PORT_x_MUX_8_FUNC_1, PE8); /* RX: E; mux 8; func 1; PE8 */
+		break;
+	case 1:	serial_early_do_mach_portmux('H', PORT_x_MUX_0_MASK,
+		PORT_x_MUX_0_FUNC_1, PH0); /* TX: H; mux 0; func 1; PH0 */
+		serial_early_do_mach_portmux('H', PORT_x_MUX_1_MASK,
+		PORT_x_MUX_1_FUNC_1, PH1); /* RX: H; mux 1; func 1; PH1 */
+		break;
+	case 2:	serial_early_do_mach_portmux('B', PORT_x_MUX_4_MASK,
+		PORT_x_MUX_4_FUNC_1, PB4); /* TX: B; mux 4; func 1; PB4 */
+		serial_early_do_mach_portmux('B', PORT_x_MUX_5_MASK,
+		PORT_x_MUX_5_FUNC_1, PB5); /* RX: B; mux 5; func 1; PB5 */
+		break;
+	case 3:	serial_early_do_mach_portmux('B', PORT_x_MUX_6_MASK,
+		PORT_x_MUX_6_FUNC_1, PB6); /* TX: B; mux 6; func 1; PB6 */
+		serial_early_do_mach_portmux('B', PORT_x_MUX_7_MASK,
+		PORT_x_MUX_7_FUNC_1, PB7); /* RX: B; mux 7; func 1; PB7 */
+		break;
 	}
-	SSYNC();
 #elif defined(__ADSPBF561__)
 	/* UART pins could be GPIO, but they aren't pin muxed.  */
 #else
@@ -178,6 +218,7 @@ static inline void serial_early_do_portmux(void)
 #  error "missing portmux logic for UART"
 # endif
 #endif
+	SSYNC();
 }
 
 __attribute__((always_inline))
