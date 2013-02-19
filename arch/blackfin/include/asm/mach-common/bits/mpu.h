@@ -74,7 +74,7 @@
 #define PAGE_SIZE_64KB		0x00050000	/* 64 KB page size */
 #define PAGE_SIZE_16MB		0x00060000	/* 16 MB page size */
 #define PAGE_SIZE_64MB		0x00070000	/* 64 MB page size */
-#define PAGE_SIZE_MASK		0x00070000	/* the bits for the page_size field */
+#define PAGE_SIZE_MASK		0x00070000	/* page_size field mask */
 #define PAGE_SIZE_SHIFT		16
 #define CPLB_L1SRAM		0x00000020	/* 0=SRAM mapped in L1, 0=SRAM not mapped to L1 */
 #define CPLB_PORTPRIO		0x00000200	/* 0=low priority port, 1= high priority port */

@@ -38,13 +38,13 @@
 #define ANOMALY_16000010 (1)
 /* False Hardware Error when RETI Points to Invalid Memory */
 #define ANOMALY_16000011 (1)
-/* Speculative Fetches of Indirect-Pointer Instructions Can Cause False Hardware Errors */
+/* Speculative Fetches of Indirect-Pointer Inst Can Cause False Hw Errors */
 #define ANOMALY_16000012 (1)
 /* False Hardware Errors Caused by Fetches at the Boundary of Reserved Memory */
 #define ANOMALY_16000013 (1)
 /* False Hardware Error from an Access in the Shadow of a Conditional Branch */
 #define ANOMALY_16000014 (1)
-/* Multi-Issue Instruction with dsp32shiftimm in slot1 and P-reg Store in slot2 Not Supported */
+/* Multi-Issue Inst with dsp32shiftimm in slot1 and P in slot2 Not Supported */
 #define ANOMALY_16000015 (1)
 /* Speculative Fetches Can Cause Undesired External FIFO Operations */
 #define ANOMALY_16000017 (1)
@@ -54,11 +54,11 @@
 #define ANOMALY_16000019 (1)
 /* rom_SysControl() Fails to Set DDR0_CTL.INIT for Wakeup From Hibernate */
 #define ANOMALY_16000020 (1)
-/* rom_SysControl() Fails to Save and Restore DDR0_PHYCTL3 for Hibernate/Wakeup Sequence */
+/* rom_SysControl() Fails to Save and Restore DDR0_PHYCTL3 for Hb/Wk Sequence */
 #define ANOMALY_16000021 (1)
 /* Boot Code Fails to Enable Parity Fault Detection */
 #define ANOMALY_16000022 (1)
-/* USB DMA interrupt status do not show the DMA channel interrupt in the DMA ISR */
+/* USB DMA interrupt status do not show the DMA channel intr in the DMA ISR */
 #define ANOMALY_16000027 (1)
 /* Interrupted Core Reads of MMRs May Cause Data Loss */
 #define ANOMALY_16000030 (1)

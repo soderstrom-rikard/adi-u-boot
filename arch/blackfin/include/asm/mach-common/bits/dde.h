@@ -8,7 +8,7 @@
 /* DMA_CONFIG Masks */
 #define DMAEN			(1 << DMAEN_P)	/* DMA Channel Enable */
 #define WNR			(1 << WNR_P)	/* Channel Direction (W/R*) */
-#define SYNC			(1 << SYNC_P)	/* Synchronize Work Unit Transitions */
+#define SYNC			(1 << SYNC_P)	/* Sync Work Unit Transitions */
 #define CADDR			(1 << CADDR_P)	/* Use Current Address */
 #define PSIZE			(7 << PSIZE_P)	/* Peripheral Word Size */
 #define PSIZE_1			(0 << PSIZE_P)
@@ -65,15 +65,15 @@
 #define PDRF_P			28
 
 /* DMA_STATUS Masks */
-#define DMA_DONE		(1 << DMA_DONE_P)	/* Work Unit/Row Done Interrupt */
+#define DMA_DONE		(1 << DMA_DONE_P)	/* Work Unit/Row Done */
 #define DMA_ERR			(1 << DMA_ERR_P)	/* Error Interrupt */
-#define DMA_PIRQ		(1 << DMA_PIRQ_P)	/* Peripheral Interrupt Request */
+#define DMA_PIRQ		(1 << DMA_PIRQ_P)	/* Peri Intr Request */
 #define DMA_ERRC		(7 << DMA_ERRC_P)	/* Error Cause */
 #define DMA_RUN			(7 << DMA_RUN_P)	/* Run Status */
-#define DMA_PBWIDTH		(3 << DMA_PBWIDTH_P)	/* Peripheral Bus Width */
+#define DMA_PBWIDTH		(3 << DMA_PBWIDTH_P)	/* Peri Bus Width */
 #define DMA_MBWIDTH		(3 << DMA_MBWIDTH_P)	/* Memory Bus Width */
 #define DMA_FIFOFILL		(7 << DMA_FIFOFILL_P)	/* FIFO Fill Status */
-#define DMA_TWAIT		(1 << DMA_TWAIT_P)	/* Trigger Wait Status */
+#define DMA_TWAIT		(1 << DMA_TWAIT_P)	/* Trigger Wait Stat */
 
 #define DMA_DONE_P		0
 #define DMA_ERR_P		1
