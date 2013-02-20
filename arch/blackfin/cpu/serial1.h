@@ -89,7 +89,7 @@ struct bfin_mmr_serial {
 #endif
 };
 
-typedef uint16_t uart_lsr_t;
+#define uart_lsr_t uint32_t
 #define _lsr_read(p)     bfin_read(&p->lsr)
 #define _lsr_write(p, v) bfin_write(&p->lsr, v)
 
@@ -145,12 +145,14 @@ static inline void serial_early_do_portmux(void)
 {
 #if defined(__ADSPBF50x__)
 	switch (CONFIG_UART_CONSOLE) {
-	case 0:	serial_early_do_mach_portmux('G', PORT_x_MUX_7_MASK,
+	case 0:
+		serial_early_do_mach_portmux('G', PORT_x_MUX_7_MASK,
 		PORT_x_MUX_7_FUNC_1, PG12); /* TX: G; mux 7; func 1; PG12 */
 		serial_early_do_mach_portmux('G', PORT_x_MUX_7_MASK,
 		PORT_x_MUX_7_FUNC_1, PG13); /* RX: G; mux 7; func 1; PG13 */
 		break;
-	case 1:	serial_early_do_mach_portmux('F', PORT_x_MUX_3_MASK,
+	case 1:
+		serial_early_do_mach_portmux('F', PORT_x_MUX_3_MASK,
 		PORT_x_MUX_3_FUNC_1, PF7); /* TX: F; mux 3; func 1; PF6 */
 		serial_early_do_mach_portmux('F', PORT_x_MUX_3_MASK,
 		PORT_x_MUX_3_FUNC_1, PF6); /* RX: F; mux 3; func 1; PF7 */
@@ -158,12 +160,14 @@ static inline void serial_early_do_portmux(void)
 	}
 #elif defined(__ADSPBF51x__)
 	switch (CONFIG_UART_CONSOLE) {
-	case 0:	serial_early_do_mach_portmux('G', PORT_x_MUX_5_MASK,
+	case 0:
+		serial_early_do_mach_portmux('G', PORT_x_MUX_5_MASK,
 		PORT_x_MUX_5_FUNC_2, PG9); /* TX: G; mux 5; func 2; PG9 */
 		serial_early_do_mach_portmux('G', PORT_x_MUX_5_MASK,
 		PORT_x_MUX_5_FUNC_2, PG10); /* RX: G; mux 5; func 2; PG10 */
 		break;
-	case 1:	serial_early_do_mach_portmux('H', PORT_x_MUX_3_MASK,
+	case 1:
+		serial_early_do_mach_portmux('H', PORT_x_MUX_3_MASK,
 		PORT_x_MUX_3_FUNC_2, PH7); /* TX: H; mux 3; func 2; PH6 */
 		serial_early_do_mach_portmux('H', PORT_x_MUX_3_MASK,
 		PORT_x_MUX_3_FUNC_2, PH6); /* RX: H; mux 3; func 2; PH7 */
@@ -171,12 +175,14 @@ static inline void serial_early_do_portmux(void)
 	}
 #elif defined(__ADSPBF52x__)
 	switch (CONFIG_UART_CONSOLE) {
-	case 0:	serial_early_do_mach_portmux('G', PORT_x_MUX_2_MASK,
+	case 0:
+		serial_early_do_mach_portmux('G', PORT_x_MUX_2_MASK,
 		PORT_x_MUX_2_FUNC_3, PG7); /* TX: G; mux 2; func 3; PG7 */
 		serial_early_do_mach_portmux('G', PORT_x_MUX_2_MASK,
 		PORT_x_MUX_2_FUNC_3, PG8); /* RX: G; mux 2; func 3; PG8 */
 		break;
-	case 1:	serial_early_do_mach_portmux('F', PORT_x_MUX_5_MASK,
+	case 1:
+		serial_early_do_mach_portmux('F', PORT_x_MUX_5_MASK,
 		PORT_x_MUX_5_FUNC_3, PF14); /* TX: F; mux 5; func 3; PF14 */
 		serial_early_do_mach_portmux('F', PORT_x_MUX_5_MASK,
 		PORT_x_MUX_5_FUNC_3, PF15); /* RX: F; mux 5; func 3; PF15 */
@@ -186,26 +192,30 @@ static inline void serial_early_do_portmux(void)
 	const uint16_t func[] = { PFDE, PFTE, };
 	bfin_write_PORT_MUX(bfin_read_PORT_MUX() & ~func[CONFIG_UART_CONSOLE]);
 	bfin_write_PORTF_FER(bfin_read_PORTF_FER() |
-	                     (1 << P_IDENT(P_UART(RX))) |
-	                     (1 << P_IDENT(P_UART(TX))));
+			(1 << P_IDENT(P_UART(RX))) |
+			(1 << P_IDENT(P_UART(TX))));
 #elif defined(__ADSPBF54x__)
 	switch (CONFIG_UART_CONSOLE) {
-	case 0:	serial_early_do_mach_portmux('E', PORT_x_MUX_7_MASK,
+	case 0:
+		serial_early_do_mach_portmux('E', PORT_x_MUX_7_MASK,
 		PORT_x_MUX_7_FUNC_1, PE7); /* TX: E; mux 7; func 1; PE7 */
 		serial_early_do_mach_portmux('E', PORT_x_MUX_8_MASK,
 		PORT_x_MUX_8_FUNC_1, PE8); /* RX: E; mux 8; func 1; PE8 */
 		break;
-	case 1:	serial_early_do_mach_portmux('H', PORT_x_MUX_0_MASK,
+	case 1:
+		serial_early_do_mach_portmux('H', PORT_x_MUX_0_MASK,
 		PORT_x_MUX_0_FUNC_1, PH0); /* TX: H; mux 0; func 1; PH0 */
 		serial_early_do_mach_portmux('H', PORT_x_MUX_1_MASK,
 		PORT_x_MUX_1_FUNC_1, PH1); /* RX: H; mux 1; func 1; PH1 */
 		break;
-	case 2:	serial_early_do_mach_portmux('B', PORT_x_MUX_4_MASK,
+	case 2:
+		serial_early_do_mach_portmux('B', PORT_x_MUX_4_MASK,
 		PORT_x_MUX_4_FUNC_1, PB4); /* TX: B; mux 4; func 1; PB4 */
 		serial_early_do_mach_portmux('B', PORT_x_MUX_5_MASK,
 		PORT_x_MUX_5_FUNC_1, PB5); /* RX: B; mux 5; func 1; PB5 */
 		break;
-	case 3:	serial_early_do_mach_portmux('B', PORT_x_MUX_6_MASK,
+	case 3:
+		serial_early_do_mach_portmux('B', PORT_x_MUX_6_MASK,
 		PORT_x_MUX_6_FUNC_1, PB6); /* TX: B; mux 6; func 1; PB6 */
 		serial_early_do_mach_portmux('B', PORT_x_MUX_7_MASK,
 		PORT_x_MUX_7_FUNC_1, PB7); /* RX: B; mux 7; func 1; PB7 */

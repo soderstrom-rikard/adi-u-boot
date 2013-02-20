@@ -38,7 +38,7 @@ struct bfin_mmr_serial {
 	u32 rxdiv_cnt;
 };
 
-typedef uint32_t uart_lsr_t;
+#define uart_lsr_t uint32_t
 #define _lsr_read(p)     bfin_read(&p->status)
 #define _lsr_write(p, v) bfin_write(&p->status, v)
 
@@ -65,12 +65,14 @@ static inline void serial_early_do_portmux(void)
 {
 #if defined(__ADSPBF60x__)
 	switch (CONFIG_UART_CONSOLE) {
-	case 0:	serial_early_do_mach_portmux('D', PORT_x_MUX_7_MASK,
+	case 0:
+		serial_early_do_mach_portmux('D', PORT_x_MUX_7_MASK,
 		PORT_x_MUX_7_FUNC_2, PD7); /* TX: D; mux 7; func 2; PD7 */
 		serial_early_do_mach_portmux('D', PORT_x_MUX_8_MASK,
 		PORT_x_MUX_8_FUNC_2, PD8); /* RX: D; mux 8; func 2; PD8 */
 		break;
-	case 1:	serial_early_do_mach_portmux('G', PORT_x_MUX_15_MASK,
+	case 1:
+		serial_early_do_mach_portmux('G', PORT_x_MUX_15_MASK,
 		PORT_x_MUX_15_FUNC_1, PG15); /* TX: G; mux 15; func 1; PG15 */
 		serial_early_do_mach_portmux('G', PORT_x_MUX_14_MASK,
 		PORT_x_MUX_14_FUNC_1, PG14); /* RX: G; mux 14; func 1; PG14 */
