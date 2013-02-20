@@ -135,15 +135,16 @@
 /*
  * SPI_MMC Settings
  */
+#define CONFIG_MMC_SPI
+#ifdef CONFIG_MMC_SPI
 #define CONFIG_MMC
 #define CONFIG_GENERIC_MMC
-#define CONFIG_MMC_SPI
-
+#endif
 
 /*
  * NAND Settings
  */
-/* #define CONFIG_NAND_PLAT */
+#define CONFIG_NAND_PLAT
 #define CONFIG_SYS_NAND_BASE		0x20212000
 #define CONFIG_SYS_MAX_NAND_DEVICE	1
 
