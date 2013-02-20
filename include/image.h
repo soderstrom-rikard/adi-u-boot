@@ -34,9 +34,10 @@
 #define __IMAGE_H__
 
 #include "compiler.h"
-#include <asm/byteorder.h>
 
 #ifdef USE_HOSTCC
+
+#include <linux/types.h>
 
 /* new uImage format support enabled on host */
 #define CONFIG_FIT		1
@@ -45,6 +46,7 @@
 
 #else
 
+#include <asm/byteorder.h>
 #include <lmb.h>
 #include <asm/u-boot.h>
 #include <command.h>
