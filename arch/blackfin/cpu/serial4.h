@@ -50,12 +50,12 @@ static inline void serial_early_do_mach_portmux(char port, int mux_mask,
 	case 'D':
 		bfin_write_PORTD_MUX((bfin_read_PORTD_MUX() &
 			~mux_mask) | mux_func);
-		bfin_write_PORTD_FER(bfin_read_PORTD_FER() | port_pin);
+		bfin_write_PORTD_FER_SET(port_pin);
 		break;
 	case 'G':
 		bfin_write_PORTG_MUX((bfin_read_PORTG_MUX() &
 			~mux_mask) | mux_func);
-		bfin_write_PORTG_FER(bfin_read_PORTG_FER() | port_pin);
+		bfin_write_PORTG_FER_SET(port_pin);
 		break;
 	}
 }
