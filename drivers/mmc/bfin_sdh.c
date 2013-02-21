@@ -119,7 +119,7 @@ sdh_send_cmd(struct mmc *mmc, struct mmc_cmd *mmc_cmd)
 #ifdef RSI_BLKSZ
 	/* wait till card ready */
 	while (!(bfin_read_RSI_ESTAT() & SD_CARD_READY))
-		;
+		continue;
 	bfin_write_RSI_ESTAT(SD_CARD_READY);
 #endif
 
