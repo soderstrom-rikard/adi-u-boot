@@ -1029,4 +1029,3 @@ void initcode(ADI_BOOT_DATA *bs)
 
 	serial_deinit();
 }
-
