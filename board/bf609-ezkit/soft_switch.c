@@ -10,13 +10,7 @@
 #include <asm/blackfin.h>
 #include <asm/io.h>
 #include <i2c.h>
-#include <asm/mach-bf609/soft_switch.h>
-
-#define NUM_SWITCH      3
-#define IODIRA          0x0
-#define IODIRB          0x1
-#define OLATA           0x14
-#define OLATB           0x15
+#include "soft_switch.h"
 
 struct switch_config {
 	uchar dir0; /* IODIRA */

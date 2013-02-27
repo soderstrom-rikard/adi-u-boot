@@ -9,7 +9,7 @@
 #include <common.h>
 #include <command.h>
 #include <asm/blackfin.h>
-#include <asm/mach-bf609/soft_switch.h>
+#include <asm/soft_switch.h>
 
 int do_softswitch(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {
