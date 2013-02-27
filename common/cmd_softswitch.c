@@ -40,4 +40,3 @@ U_BOOT_CMD(
 	"switchaddr GPA/GPB pin_offset value",
 	""
 );
-
