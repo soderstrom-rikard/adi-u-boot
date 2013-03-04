@@ -169,6 +169,13 @@
 #define DMC0_DLLCTL       0xFFC80080 /* DMC0 DLL Control Register */
 #define DMC0_PADCTL       0xFFC800C0 /* DMC0 PAD Control Register 0 */
 
+#define SEC0_CCTL0        0xFFCA4400 /* SEC0 Core Control Register n */
+#define SEC0_CCTL1        0xFFCA4440 /* SEC0 Core Control Register n */
+#define SEC0_FCTL         0xFFCA4010 /* SEC0 Fault Control Register */
+#define SEC0_GCTL         0xFFCA4000 /* SEC0 Global Control Register */
+#define SEC0_SCTL0        0xFFCA4800 /* SEC0 IRQ Source Control Register n */
+
+#define RCU0_CTL          0xFFCA6000 /* RCU0 Control Register */
 #define RCU0_CTL          0xFFCA6000 /* RCU0 Control Register */
 #define RCU0_STAT         0xFFCA6004 /* RCU0 Status Register */
 #define RCU0_CRCTL        0xFFCA6008 /* RCU0 Core Reset Control Register */
