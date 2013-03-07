@@ -1317,6 +1317,12 @@ if { $TEST_BUILD_NAND } {
     }
 
     if { $board_type == "BF537-STAMP" } {
+
+        if [ catch {exec sed -i  "/#define CONFIG_MMC_SPI/d"  include/configs/$config_file} ] {
+           send_user "\nfail disable MMC_SPI include/configs/$config_file\n"
+           set build_nand_result $TEST_FAIL
+        }
+
         set search_str "CONFIG_NAND_PLAT"
         set change_str "#define CONFIG_NAND_PLAT"
     } else {
