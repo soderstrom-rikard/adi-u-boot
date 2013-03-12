@@ -148,17 +148,14 @@ do
     gen_testcase "$result" "$class_name" "$case_name" "$test_time" "$result_xml" "$err_msg" "$err_msg_full"
     done
    
-
     cp summary_remain summary
 done
 
 done
 
-cp summary_bak summary
-
-## Extract summary data from uboot-misc-test.
+# Extract summary data from uboot-misc-test.
     part2_head=1
-    part2_end=`sed -n '/^$/{n;/^$/=;}' uboot-misc-test-summary-log | head -1`
+    part2_end=`cat uboot-misc-test-summary-log | wc -l`
     ((part2_end += 2))
     part2_msg=`sed -n ''$part2_head','$part2_end'p' uboot-misc-test-summary-log `
     echo "$part2_msg" > part2_file
@@ -181,8 +178,7 @@ cp summary_bak summary
    # cd $this_log/logs/
     #log_file=`grep -rl "icache $icache_status" "$timestamp" -m 1 | xargs grep -rl "dcache $dcache_status"  -m 1 | xargs  grep -l "Core" -m 1  `
     folder="$this_log/$timestamp"
-    log_file=$folder/uboot-misc-test-summary-log 
-    fi
+    log_file=$folder/uboot-misc-test-detailed-log 
     #echo "###### $log_file ###\n"
     if [ -z $log_file  ] ; then
     echo "Not find its log file!!!"
@@ -221,10 +217,12 @@ do
     echo -e "\n********* ${case_status[$i]}($case_name):  \n$err_msg "
     fi
 
-#   echo "$case_name  "
+    #echo "$case_name  "
     gen_testcase "$result" "$class_name" "$case_name" "$test_time" "$result_xml" "$err_msg" "$err_msg_full"
+    done
+
 done
-   
+
 # generate complete result.xml
 test_num=$((err_num + pass_num + skip_num + err_num2 + pass_num2 + skip_num2))
 err_num=$((err_num + err_num2))
@@ -232,5 +230,3 @@ skip_num=$((skip_num + skip_num2))
 pass_num=$((pass_num + pass_num2))
 overall_time=0
 complete_xml "$testsuite_name" "$err_num" "$fail_num" "$skip_num" "$test_num" "$overall_time" "$result_xml"
-
-
