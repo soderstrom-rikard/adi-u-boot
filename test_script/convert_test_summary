@@ -153,10 +153,84 @@ do
 done
 
 done
+
+cp summary_bak summary
+
+## Extract summary data from uboot-misc-test.
+    part2_head=1
+    part2_end=`sed -n '/^$/{n;/^$/=;}' uboot-misc-test-summary-log | head -1`
+    ((part2_end += 2))
+    part2_msg=`sed -n ''$part2_head','$part2_end'p' uboot-misc-test-summary-log `
+    echo "$part2_msg" > part2_file
+    class_name="$testsuite_name"."uboot-misc-test"
+    #echo "#### $class_name \n"
+    line_head=`sed -n '/^Test Results/='  part2_file |head -1`
+    line_end=`sed -n "$line_head,$ {/^$/= }" part2_file |head -1`
+
+    #echo "!!!line_head is $line_head, line_end is $line_end .\n"
+    t=$((line_end - line_head))
+    l=0
+    for j in `seq $((line_head + 2))  $((line_end - 1 )) `
+    do
+     case_status[$l]=`sed -n ''$j'p' part2_file |sed -e  's/-//' -e 's/[[:space:]]*//' | awk 'BEGIN { FS="[:]" } {print $1 }'`
+     case_status_num[$l]=`sed -n ''$j'p' part2_file |sed -e  's/-//' -e 's/[[:space:]]*//' | awk 'BEGIN { FS="[:]" } {print $2 }'`
+     
+    echo "${case_status[$l]}  ${case_status_num[$l]} "
+   ((l += 1))
+    done
+   # cd $this_log/logs/
+    #log_file=`grep -rl "icache $icache_status" "$timestamp" -m 1 | xargs grep -rl "dcache $dcache_status"  -m 1 | xargs  grep -l "Core" -m 1  `
+    folder="$this_log/$timestamp"
+    log_file=$folder/uboot-misc-test-summary-log 
+    fi
+    #echo "###### $log_file ###\n"
+    if [ -z $log_file  ] ; then
+    echo "Not find its log file!!!"
+    exit
+    fi
+
+for i in `seq 0 $((l - 1))`
+do
+    case_status[$i]=` echo ${case_status[$i]} | tr -d ''`
+    err_msg=''
+    err_msg_full=''
+
+    if [ "${case_status[$i]}" == "Tests Not Run" ] ; then
+    result=SKIP
+    ((skip_num2 += ${case_status_num[$i]} ))
+    elif  [ "${case_status[$i]}" == "Failed Tests" ] ; then
+    result=FAIL
+    ((err_num2 += ${case_status_num[$i]} ))
+    elif  [ "${case_status[$i]}" == "Passed Tests" ] ; then
+    result=PASS
+    ((pass_num2 += ${case_status_num[$i]} ))
+    else 
+     continue
+    fi
+    line_head=`sed -n "/^${case_status[$i]}/="  part2_file |head -1`
+    line_end=`sed -n "$line_head,$ {/^$/= }" part2_file |head -1`
+
+    t=$((line_end - line_head))
+    for j in `seq $((line_head + 2 )) $((line_end - 1 ))`
+    do
+    case_name=`sed -n ''$j'p' part2_file |sed -e  's/-//' -e 's/[[:space:]]*//' | awk ' {print$0}'`
+
+    if [ "${case_status[$i]}" == "Failed Tests" ] ; then
+    err_msg=`grep -r "Recording result: $case_name" -B10 $log_file | sed -e 's/<//g' -e 's/&//g'| tr -d "\010" ` # tr command is used to delete Ctrl+ H \010.
+    err_msg_full=`grep -r "Recording result: $case_name" -B40 $log_file | sed -e 's/<//g' -e 's/&//g'| tr -d "\010" ` # tr command is used to delete Ctrl+ H \010.
+    echo -e "\n********* ${case_status[$i]}($case_name):  \n$err_msg "
+    fi
+
+#   echo "$case_name  "
+    gen_testcase "$result" "$class_name" "$case_name" "$test_time" "$result_xml" "$err_msg" "$err_msg_full"
+done
+   
 # generate complete result.xml
-test_num=$((fail_num + pass_num + skip_num))
+test_num=$((err_num + pass_num + skip_num + err_num2 + pass_num2 + skip_num2))
+err_num=$((err_num + err_num2))
+skip_num=$((skip_num + skip_num2))
+pass_num=$((pass_num + pass_num2))
 overall_time=0
 complete_xml "$testsuite_name" "$err_num" "$fail_num" "$skip_num" "$test_num" "$overall_time" "$result_xml"
 
 
-cp summary_bak summary
