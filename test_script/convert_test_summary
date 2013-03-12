@@ -153,6 +153,8 @@ done
 
 done
 
+cp summary_bak summary
+
 # Extract summary data from uboot-misc-test.
     part2_head=1
     part2_end=`cat uboot-misc-test-summary-log | wc -l`
