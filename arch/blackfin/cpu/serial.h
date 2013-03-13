@@ -78,16 +78,20 @@ static inline void serial_early_puts(const char *s)
 #else
 
 .macro serial_early_init
-#if defined(CONFIG_DEBUG_EARLY_SERIAL) && defined(BFIN_BOOT_BYPASS)
-	call _serial_initialize;
+#if defined(CONFIG_DEBUG_EARLY_SERIAL) && \
+	CONFIG_BFIN_BOOT_MODE == BFIN_BOOT_BYPASS && \
+	!defined(CONFIG_UART_MEM)
+	call __serial_early_init;
 #endif
 .endm
 
 .macro serial_early_set_baud
-#if defined(CONFIG_DEBUG_EARLY_SERIAL) && defined(BFIN_BOOT_BYPASS)
+#if defined(CONFIG_DEBUG_EARLY_SERIAL) && \
+	CONFIG_BFIN_BOOT_MODE == BFIN_BOOT_BYPASS && \
+	!defined(CONFIG_UART_MEM)
 	R0.L = LO(CONFIG_BAUDRATE);
 	R0.H = HI(CONFIG_BAUDRATE);
-	call _serial_set_baud;
+	call __serial_early_set_baud;
 #endif
 .endm
 
@@ -116,7 +120,7 @@ static inline void serial_early_puts(const char *s)
 	.ascii __FILE__; \
 	.ascii ": "; \
 	.ascii str; \
-	.asciz "\n"; \
+	.ascii "\n"; \
 	.previous; \
 	R0.L = 7b; \
 	R0.H = 7b; \
