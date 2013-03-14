@@ -720,8 +720,8 @@ update_serial_clocks(ADI_BOOT_DATA *bs, uint sdivB, uint divB, uint vcoB)
 	 * for dividing which means we'd generate a libgcc reference.
 	 */
 	unsigned int sdivR, vcoR;
-	unsigned int dividend = sdivB * divB * vcoR;
-	unsigned int divisor = vcoB * sdivR;
+	unsigned int dividend;
+	unsigned int divisor;
 	unsigned int quotient;
 
 	serial_putc('a');
@@ -735,6 +735,8 @@ update_serial_clocks(ADI_BOOT_DATA *bs, uint sdivB, uint divB, uint vcoB)
 	vcoR = (bfin_read_PLL_CTL() >> 9) & 0x3f;
 #endif
 
+	dividend = sdivB * divB * vcoR;
+	divisor = vcoB * sdivR;
 	quotient = early_division(dividend, divisor);
 	serial_early_put_div(quotient - ANOMALY_05000230);
 	serial_putc('c');
