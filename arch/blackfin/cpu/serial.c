@@ -315,6 +315,28 @@ void bfin_serial_initialize(void)
 #endif
 }
 
+#ifdef CONFIG_DEBUG_EARLY_SERIAL
+inline void uart_early_putc(uint32_t uart_base, const char c)
+{
+	/* send a \r for compatibility */
+	if (c == '\n')
+		uart_early_putc(uart_base, '\r');
+
+	/* wait for the hardware fifo to clear up */
+	while (!(_lsr_read(pUART) & THRE))
+		continue;
+
+	/* queue the character for transmission */
+	bfin_write(&pUART->thr, c);
+	SSYNC();
+}
+
+void uart_early_puts(const char *s)
+{
+	while (*s)
+		uart_early_putc(UART_BASE, *s++);
+}
+
 /* Symbol for our assembly to call. */
 void _serial_early_set_baud(uint32_t baud)
 {
@@ -326,6 +348,7 @@ void _serial_early_init(void)
 {
 	serial_early_init(UART_BASE);
 }
+#endif
 
 #elif defined(CONFIG_UART_MEM)
 
