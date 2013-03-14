@@ -200,7 +200,8 @@ static inline void __serial_set_baud(uint32_t uart_base, uint32_t baud)
 #ifdef CONFIG_DEBUG_EARLY_SERIAL
 	serial_early_set_baud(uart_base, baud);
 #else
-	uint16_t divisor = (get_uart_clk() + (baud * 8)) / (baud * 16) - ANOMALY_05000230;
+	uint16_t divisor = (get_uart_clk() + (baud * 8)) / (baud * 16)
+			- ANOMALY_05000230;
 
 	/* Program the divisor to get the baud rate we want */
 	serial_set_divisor(uart_base, divisor);
