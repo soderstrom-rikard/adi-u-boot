@@ -139,8 +139,8 @@ do
     case_name=`sed -n ''$j'p' part_file |sed -e  's/-//' -e 's/[[:space:]]*//' | awk ' {print$0}'`
 
     if [ "${case_status[$i]}" == "Failed Tests" ] ; then
-    err_msg=`grep -r "Recording result: $case_name" -B10 $log_file | sed -e 's/<//g' -e 's/&//g'| tr -d "\010" | tr -d "\033" ` # tr command is used to delete Ctrl+ H \010, Ctrl+ [ \033.. 
-    err_msg_full=`grep -r "Recording result: $case_name" -B40 $log_file | sed -e 's/<//g' -e 's/&//g'| tr -d "\010" | tr -d "\033" ` # tr command is used to delete Ctrl+ H \010,Ctrl+ [ \033.
+    err_msg=`grep -r "Recording result: $case_name" -B10 $log_file | sed -e 's/<//g' -e 's/&//g'| tr -d "\010" | tr -d "\017" | tr -d "\033" ` # tr command is used to delete Ctrl+ H ,Ctrl+ O, Ctrl+ [ . 
+    err_msg_full=`grep -r "Recording result: $case_name" -B40 $log_file | sed -e 's/<//g' -e 's/&//g'| tr -d "\010" | tr -d "\017" | tr -d "\033" ` # tr command is used to delete Ctrl+ H, Ctrl+ O,Ctrl+ [ .
     echo -e "\n********* ${case_status[$i]}($case_name):  \n$err_msg "
     fi
 
@@ -214,8 +214,8 @@ do
     case_name=`sed -n ''$j'p' part2_file |sed -e  's/-//' -e 's/[[:space:]]*//' | awk ' {print$0}'`
 
     if [ "${case_status[$i]}" == "Failed Tests" ] ; then
-    err_msg=`grep -r "Recording result: $case_name" -B10 $log_file | sed -e 's/<//g' -e 's/&//g'| tr -d "\010" | tr -d "\033" ` # tr command is used to delete Ctrl+ H \010, Ctrl+ [ \033.. 
-    err_msg_full=`grep -r "Recording result: $case_name" -B40 $log_file | sed -e 's/<//g' -e 's/&//g'| tr -d "\010" | tr -d "\033" ` # tr command is used to delete Ctrl+ H \010,Ctrl+ [ \033.
+    err_msg=`grep -r "Recording result: $case_name" -B10 $log_file | sed -e 's/<//g' -e 's/&//g'| tr -d "\010" | tr -d "\017" | tr -d "\033" ` # tr command is used to delete Ctrl+ H ,Ctrl+ O, Ctrl+ [ . 
+    err_msg_full=`grep -r "Recording result: $case_name" -B40 $log_file | sed -e 's/<//g' -e 's/&//g'| tr -d "\010" | tr -d "\017" | tr -d "\033" ` # tr command is used to delete Ctrl+ H, Ctrl+ O,Ctrl+ [ .
     echo -e "\n********* ${case_status[$i]}($case_name):  \n$err_msg "
     fi
 
