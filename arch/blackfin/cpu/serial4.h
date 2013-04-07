@@ -37,7 +37,6 @@ struct bfin_mmr_serial {
 	u32 txdiv_cnt;
 	u32 rxdiv_cnt;
 };
-
 #define uart_lsr_t uint32_t
 #define _lsr_read(p)     bfin_read(&p->status)
 #define _lsr_write(p, v) bfin_write(&p->status, v)

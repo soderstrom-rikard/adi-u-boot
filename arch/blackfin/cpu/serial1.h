@@ -288,9 +288,11 @@ static inline void serial_early_set_baud(uint32_t uart_base, uint32_t baud)
 	 * a little rather than under sample the incoming signals.
 	 */
 #if CONFIG_BFIN_BOOT_MODE == BFIN_BOOT_BYPASS
-	uint16_t divisor = (early_get_uart_clk() + baud * 8) / (baud * 16) - ANOMALY_05000230;
+	uint16_t divisor = (early_get_uart_clk() + baud * 8) / (baud * 16)
+			- ANOMALY_05000230;
 #else
-	uint16_t divisor = early_division(early_get_uart_clk() + (baud * 8), baud * 16) - ANOMALY_05000230;
+	uint16_t divisor = early_division(early_get_uart_clk() + (baud * 8),
+			baud * 16) - ANOMALY_05000230;
 #endif
 
 	serial_set_divisor(uart_base, divisor);
