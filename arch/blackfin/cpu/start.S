@@ -34,8 +34,7 @@
 #include <asm/blackfin.h>
 #include <asm/mach-common/bits/core.h>
 #include <asm/mach-common/bits/pll.h>
-
-#include "serial.h"
+#include <asm/serial.h>
 
 /* It may seem odd that we make calls to functions even though we haven't
  * relocated ourselves yet out of {flash,ram,wherever}.  This is OK because
