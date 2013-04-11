@@ -79,6 +79,7 @@ ENTRY(_start)
 	r0 = 0;
 	r0.h = HI(MSEC_TO_SCLK(CONFIG_WATCHDOG_TIMEOUT_MSECS));
 	[p4 + (WDOG_CNT - SYSMMR_BASE)] = r0;
+	SSYNC;
 	r1 = WDEN;
 	/* fire up the watchdog - R0.L above needs to be 0x0000 */
 # ifdef __ADSPBF60x__
@@ -86,6 +87,7 @@ ENTRY(_start)
 # else
 	W[p4 + (WDOG_CTL - SYSMMR_BASE)] = r1;
 # endif
+	SSYNC;
 #endif
 
 	/* Turn on the serial for debugging the init process */
