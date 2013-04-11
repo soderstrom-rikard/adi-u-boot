@@ -32,6 +32,7 @@
 
 #include <config.h>
 #include <asm/blackfin.h>
+#include <asm/mach-common/bits/watchdog.h>
 #include <asm/mach-common/bits/core.h>
 #include <asm/mach-common/bits/pll.h>
 #include <asm/serial.h>
@@ -68,14 +69,22 @@ ENTRY(_start)
 	 * That should be long enough to bootstrap ourselves up and
 	 * then the common u-boot code can take over.
 	 */
+	r1 = WDDIS;
+# ifdef __ADSPBF60x__
+	[p4 + (WDOG_CTL - SYSMMR_BASE)] = r1;
+# else
+	W[p4 + (WDOG_CTL - SYSMMR_BASE)] = r1;
+# endif
+	SSYNC;
 	r0 = 0;
 	r0.h = HI(MSEC_TO_SCLK(CONFIG_WATCHDOG_TIMEOUT_MSECS));
 	[p4 + (WDOG_CNT - SYSMMR_BASE)] = r0;
+	r1 = WDEN;
 	/* fire up the watchdog - R0.L above needs to be 0x0000 */
 # ifdef __ADSPBF60x__
-	[p4 + (WDOG_CTL - SYSMMR_BASE)] = r0;
+	[p4 + (WDOG_CTL - SYSMMR_BASE)] = r1;
 # else
-	W[p4 + (WDOG_CTL - SYSMMR_BASE)] = r0;
+	W[p4 + (WDOG_CTL - SYSMMR_BASE)] = r1;
 # endif
 #endif
 
