@@ -131,7 +131,7 @@ static int sdh_setup_data(struct mmc *mmc, struct mmc_data *data)
 {
 	u16 data_ctl = 0;
 	u16 dma_cfg = 0;
-	unsigned long data_size = data->blocksize;
+	unsigned long data_size = data->blocksize * data->blocks;
 
 	/* Don't support write yet. */
 	if (data->flags & MMC_DATA_WRITE)
@@ -303,13 +303,14 @@ int bfin_mmc_init(bd_t *bis)
 	mmc->set_ios = bfin_sdh_set_ios;
 	mmc->init = bfin_sdh_init;
 	mmc->getcd = NULL;
+	mmc->getwp = NULL;
 	mmc->host_caps = MMC_MODE_4BIT;
 
 	mmc->voltages = MMC_VDD_32_33 | MMC_VDD_33_34;
 	mmc->f_max = get_sclk();
 	mmc->f_min = mmc->f_max >> 9;
 
-	mmc->b_max = 1;
+	mmc->b_max = 0;
 
 	mmc_register(mmc);
 
