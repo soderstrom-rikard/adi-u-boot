@@ -170,6 +170,8 @@
 #define CONFIG_MISC_INIT_R
 #define CONFIG_BFIN_SOFT_SWITCH
 
+#define CONFIG_ADI_GPIO2
+
 /* linkport switch, uncomment to enable, conflict with nor flash
 #define CONFIG_BFIN_LINKPORT
 */
