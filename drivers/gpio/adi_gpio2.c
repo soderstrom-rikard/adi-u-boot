@@ -67,10 +67,10 @@ static int cmp_label(unsigned short ident, const char *label)
 #define is_reserved(m, i, e) (map_entry(m, i) & gpio_bit(i))
 #define reserve(m, i)        (map_entry(m, i) |= gpio_bit(i))
 #define unreserve(m, i)      (map_entry(m, i) &= ~gpio_bit(i))
-#define DECLARE_RESERVED_MAP(m, c) static unsigned short reserved_##m##_map[c]
+#define DECLARE_RESERVED_MAP(m, c) unsigned short reserved_##m##_map[c]
 
-DECLARE_RESERVED_MAP(gpio, GPIO_BANK_NUM);
-DECLARE_RESERVED_MAP(peri, gpio_bank(MAX_RESOURCES));
+static DECLARE_RESERVED_MAP(gpio, GPIO_BANK_NUM);
+static DECLARE_RESERVED_MAP(peri, gpio_bank(MAX_RESOURCES));
 
 inline int check_gpio(unsigned gpio)
 {
@@ -311,7 +311,7 @@ int gpio_free(unsigned gpio)
 }
 
 #ifdef ADI_SPECIAL_GPIO_BANKS
-DECLARE_RESERVED_MAP(special_gpio, gpio_bank(MAX_RESOURCES));
+static DECLARE_RESERVED_MAP(special_gpio, gpio_bank(MAX_RESOURCES));
 
 int special_gpio_request(unsigned gpio, const char *label)
 {
@@ -438,4 +438,3 @@ void gpio_labels(void)
 			continue;
 	}
 }
-
