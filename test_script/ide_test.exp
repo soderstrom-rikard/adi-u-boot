@@ -4,6 +4,8 @@ send_user "Starting ide_test.exp!\n"
 
 set uboot_path ~/checkouts/uboot/u-boot_1.1.6
 set uclinux_path ~/checkouts/kernel/uClinux-dist
+
+
 set TITLE "IDE Test"
 set dxe_filename linux
 set ttydev /dev/ttyS0
