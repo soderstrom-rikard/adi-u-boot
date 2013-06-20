@@ -177,7 +177,7 @@ static int dw_eth_init(struct eth_device *dev, bd_t *bis)
 		TXSECONDFRAME, &dma_p->opmode);
 
 
-	eonf = iRAMEBURSTENABLE | DISABLERXOWN;
+	conf = FRAMEBURSTENABLE | DISABLERXOWN;
 #else
 	writel(RXDMA_PBL8, &dma_p->busmode);
 
