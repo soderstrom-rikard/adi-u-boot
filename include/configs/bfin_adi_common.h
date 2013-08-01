@@ -93,6 +93,7 @@
 # define CONFIG_CMD_LDRINFO
 # define CONFIG_CMD_REGINFO
 # define CONFIG_CMD_STRINGS
+# define CONFIG_CMD_MEMTEST
 # if defined(__ADSPBF51x__) || defined(__ADSPBF52x__) || defined(__ADSPBF54x__)
 #  define CONFIG_CMD_OTP
 #  define CONFIG_CMD_SPIBOOTLDR
