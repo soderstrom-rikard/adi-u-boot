@@ -5110,6 +5110,7 @@ if {  $TEST_TFTP } {
 
     step "do tftp $TFTP_ITERATIONS times"
     set timeout 100
+    send "\r"
 #
 # Note: the tftp error counter can by incremented at various
 #  place in the code above, so don't reset it to zero here.
