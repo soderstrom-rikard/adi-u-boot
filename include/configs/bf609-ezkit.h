@@ -159,6 +159,11 @@
 #define CONFIG_BFIN_SDH
 
 /*
+ * Run core 1 from L1 SRAM start address when init uboot on core 0
+ */
+/* #define CONFIG_CORE1_RUN	1 */
+
+/*
  * Misc Settings
  */
 #define CONFIG_BOARD_EARLY_INIT_F

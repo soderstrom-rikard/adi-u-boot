@@ -212,6 +212,7 @@ static int do_mem_mw(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 		buf += size;
 	}
 	unmap_sysmem(buf);
+
 	return 0;
 }
 

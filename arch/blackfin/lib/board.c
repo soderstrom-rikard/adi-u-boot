@@ -63,6 +63,7 @@ static int display_banner(void)
 static int init_baudrate(void)
 {
 	gd->baudrate = getenv_ulong("baudrate", 10, CONFIG_BAUDRATE);
+	gd->bd->bi_baudrate = gd->baudrate;
 	return 0;
 }
 
@@ -232,8 +233,6 @@ static int global_board_data_init(void)
 	bd->bi_sclk = get_sclk();
 	bd->bi_memstart = CONFIG_SYS_SDRAM_BASE;
 	bd->bi_memsize = CONFIG_SYS_MAX_RAM_SIZE;
-	bd->bi_baudrate = (gd->baudrate > 0)
-		? simple_strtoul(gd->baudrate, NULL, 10) : CONFIG_BAUDRATE;
 
 	return 0;
 }
@@ -434,18 +433,4 @@ void board_init_r(gd_t * id, ulong dest_addr)
 	/* main_loop() can return to retry autoboot, if so just run it again. */
 	for (;;)
 		main_loop();
-}
-
-void hang(void)
-{
-#ifdef CONFIG_STATUS_LED
-	status_led_set(STATUS_LED_BOOT, STATUS_LED_OFF);
-	status_led_set(STATUS_LED_CRASH, STATUS_LED_BLINKING);
-#endif
-	puts("### ERROR ### Please RESET the board ###\n");
-	while (1)
-		/* If a JTAG emulator is hooked up, we'll automatically trigger
-		 * a breakpoint in it.  If one isn't, this is just a NOP.
-		 */
-		asm("emuexcpt;");
 }
