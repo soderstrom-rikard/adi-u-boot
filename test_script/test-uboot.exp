@@ -3322,17 +3322,7 @@ while 1 {
          incr tftp_errors
       }
 
-      "# T" {
-         send_log "TFTP-ERROR\n"
-         incr tftp_errors
-      }
-
       "TFTP error" {
-         send_log "TFTP-ERROR\n"
-         incr tftp_errors
-      }
-
-      "T #" {
          send_log "TFTP-ERROR\n"
          incr tftp_errors
       }
