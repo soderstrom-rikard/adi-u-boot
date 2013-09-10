@@ -5328,7 +5328,7 @@ if {  $TEST_TFTP } {
 if { $TEST_TFTP_WITH_ETHTOOL } {
 
     expect ">"
-    send "\r"
+    send "print\r"
     wait_for_uboot
 
     step "tftp download $BIG_KERNEL_GZ_FILE at 10 duplux half"
