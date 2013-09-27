@@ -4010,7 +4010,7 @@ while 1 {
 
       timeout {
          send_user "FATAL ERROR: uboot got lost setting an environment variable\n"
-         all_done
+         break
       }
    }
 }
@@ -5218,7 +5218,7 @@ if {  $TEST_TFTP } {
                     }
                     timeout {
                         send_user "FATAL ERROR: Not able to erase flash\n"
-                        all_done
+                        break
                     }
                 }
             }
