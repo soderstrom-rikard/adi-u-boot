@@ -542,7 +542,7 @@ int designware_initialize(u32 id, ulong base_addr, u32 phy_addr, u32 interface)
 	memset(dev, 0, sizeof(struct eth_device));
 	memset(priv, 0, sizeof(struct dw_eth_dev));
 #ifdef CONFIG_BLACKFIN
-	priv->txbuffs = L1_DATA_A_SRAM;
+	priv->txbuffs = (char *)L1_DATA_A_SRAM;
 	priv->rxbuffs = priv->txbuffs + TX_TOTAL_BUFSIZE;
 	priv->tx_mac_descrtable = (struct dmamacdescr *)(priv->rxbuffs + RX_TOTAL_BUFSIZE);
 	priv->rx_mac_descrtable = (struct dmamacdescr *)(priv->tx_mac_descrtable + CONFIG_TX_DESCR_NUM*sizeof(struct dmamacdescr));
