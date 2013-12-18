@@ -65,8 +65,9 @@
 #define _BOOTROM_MDMA                  0xEF000006
 #if defined(__ADSPBF60x__)
 #define _BOOTROM_MEMBOOT               0xC800000C
-#endif
+#else
 #define _BOOTROM_MEMBOOT               0xEF000008
+#endif
 #define _BOOTROM_SPIBOOT               0xEF00000A
 #define _BOOTROM_TWIBOOT               0xEF00000C
 /*       reserved                      0xEF00000E */
