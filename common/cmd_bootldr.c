@@ -123,9 +123,15 @@ static void ldr_exec(void *addr)
 	ldr_entry();
 
 #else
-
-	int32_t (*BOOTROM_MEM)(void *, int32_t, int32_t, void *) = (void *)_BOOTROM_MEMBOOT;
-	BOOTROM_MEM(addr, 0, 0, NULL);
+	#if defined(__ADSPBF60x__)
+	  int32_t(*BOOTROM_MEM)(void *, int32_t, int32_t, void *,
+	 int32_t, void *) = (void *)_BOOTROM_MEMBOOT;
+	  BOOTROM_MEM(addr, 0, 0, NULL, 0x1, NULL);
+	#else
+	  int32_t(*BOOTROM_MEM)(void *, int32_t, int32_t, void *) =
+	 (void *)_BOOTROM_MEMBOOT;
+	  BOOTROM_MEM(addr, 0, 0, NULL);
+	#endif
 
 #endif
 }
