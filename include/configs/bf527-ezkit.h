@@ -151,7 +151,7 @@
 
 /* Don't waste time transferring a logo over the UART */
 #if (CONFIG_BFIN_BOOT_MODE != BFIN_BOOT_UART)
-/*# define CONFIG_VIDEO*/
+# define CONFIG_VIDEO
 #endif
 
 /*
